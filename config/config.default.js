@@ -56,7 +56,16 @@ module.exports = appInfo => {
   // 开启代理
   config.proxy = true;
   config.ipHeaders = 'X-Real-Ip, X-Forwarded-For';
-
+  // Mongodb
+  config.mongoose = {
+    url: process.env.MONGO_URL || 'mongodb://121.41.109.1:27017/eggtoast',
+    options: {
+      // useMongoClient: true
+      // autoReconnect: true,
+      // reconnectTries: Number.MAX_VALUE,
+      // bufferMaxEntries: 0,
+    },
+  };
   return {
     ...config,
     ...userConfig,
