@@ -3,10 +3,10 @@ module.exports = app => {
     const Schema = mongoose.Schema
 
     const UserSchema = new Schema({
-        username: String,
-        password: String,
-        roles: Array,
-        phone: Number,
+        username: { type: String },
+        password: { type: String },
+        roles: { type: Array },
+        phone: { type: Number },
     })
 
     return mongoose.model("User", UserSchema)
