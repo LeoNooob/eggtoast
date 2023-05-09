@@ -5,20 +5,33 @@ const { Controller } = require('egg');
 
 /**
  * @controller UserController
+ * @summary 用户管理模块
  */
 class UserController extends Controller {
   /**
-   * @router get /user/register  路径
-   * @summary 接口的小标题信息
-   * @description 接口的描述信息
-   * @request query integer id 对参数id的描述
-   * @request query string name 对参数name的描述
+   * @router get /user
+   * @summary 获取用户列表
+   * @description 获取所有用户列表
    * @response 200 indexJsonBody
    */
+  async index() {
+    const { ctx } = this;
+    const res = await ctx.model.User.find()
+    const msg = res.length > 0 ? `找到${res.length}条记录` : '未查询到用户列表'
+    ctx.helper.success({ ctx, res, msg }) 
+  }
+  /**
+   * @router post /user/register  注册用户
+   * @summary 注册用户
+   * @description 注册用户
+   * @request body string username 用户名
+   * @request body string password 密码
+   * @request body string phone  电话号码
+   * @response 200 indexJsonBody
+   */
+  
   async register(body) {
     const { ctx, app } = this;
-    // const res = { abc: 123 };
-    // ctx.body = 'hi, egg';
     const { username, password, phone } = body
     const newUser = ctx.request.body
     const { id } = await ctx.model.User.create(newUser)
