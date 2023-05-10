@@ -3,6 +3,6 @@
  */
 module.exports = app => {
     const { router, controller } = app;
-    router.get('/user', controller.user.index)
+    router.get('/user/:pageNumber/:pageSize', controller.user.index)
     router.post('/user/register', controller.user.register);
 };

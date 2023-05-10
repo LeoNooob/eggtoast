@@ -1,6 +1,3 @@
-/* eslint-disable jsdoc/check-tag-names */
-'use strict';
-
 const { Controller } = require('egg');
 
 /**
@@ -16,7 +13,10 @@ class UserController extends Controller {
    */
   async index() {
     const { ctx } = this;
-    const res = await ctx.model.User.find()
+    const { pageNumber, pageSize } = ctx.params
+    const condition = ctx.query
+    // console.log(JSON.parse(condition))
+    const res = await ctx.model.User.find(condition).skip(Number(pageNumber) * Number(pageSize)).limit(Number(pageSize))
     const msg = res.length > 0 ? `找到${res.length}条记录` : '未查询到用户列表'
     ctx.helper.success({ ctx, res, msg }) 
   }
@@ -35,7 +35,8 @@ class UserController extends Controller {
     const { username, password, phone } = body
     const newUser = ctx.request.body
     const { id } = await ctx.model.User.create(newUser)
-    return 'success'
+    const msg = `新增成功, id: ${id}`
+    ctx.helper.success({ ctx, res: { id: id }, msg }) 
   }
 }
 
