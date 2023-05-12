@@ -66,6 +66,9 @@ module.exports = appInfo => {
       // bufferMaxEntries: 0,
     },
   };
+  config.jwt = {
+    secret: `wwpoij1oi2WS@2123`,
+  }
   return {
     ...config,
     ...userConfig,
