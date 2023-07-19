@@ -15,10 +15,14 @@ class UserController extends Controller {
     const { ctx } = this;
     const { pageNumber, pageSize } = ctx.params
     const condition = ctx.query
-    // console.log(JSON.parse(condition))
-    const res = await ctx.model.User.find(condition).skip(Number(pageNumber) * Number(pageSize)).limit(Number(pageSize))
-    const msg = res.length > 0 ? `找到${res.length}条记录` : '未查询到用户列表'
-    ctx.helper.success({ ctx, res, msg }) 
+    try {
+      const res = await ctx.model.User.find(condition).skip(Number(pageNumber) * Number(pageSize)).limit(Number(pageSize))
+      const msg = res.length > 0 ? `找到${res.length}条记录` : '未查询到用户列表'
+      ctx.helper.success({ ctx, res, msg })   
+    } catch (error) {
+      
+    }
+    
   }
   /**
    * @router post /user/register  注册用户

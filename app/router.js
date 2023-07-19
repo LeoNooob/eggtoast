@@ -10,4 +10,5 @@ module.exports = app => {
   // router.post('/user/register', controller.user.register);
   require('./routers/home')(app)
   require('./routers/user')(app)
+  require('./routers/qrcode')(app)
 };

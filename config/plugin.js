@@ -10,7 +10,7 @@ module.exports = {
     enable: true,
     package: 'egg-swagger-doc',
   },
-  mongoose: { enable: true, package: 'egg-mongoose' },
+  mongoose: { enable: false, package: 'egg-mongoose' },
   jwt: {
     enable: true,
     package: 'egg-jwt'
