@@ -1,8 +1,6 @@
 const { Controller } = require('egg');
-var cv = require('../utils/opencv')
-// var Utils = require('../utils/utils')
-// const utils = new Utils()
 const jimp = require('jimp')
+const faceapi = require('face-api.js')
 
 var qrcode_detector = null
 
@@ -21,12 +19,12 @@ class QrcodeController extends Controller {
     const { ctx } = this;
 
     try {
-      //加载OpenCV模块
-      cv = await cv
-      await loadModel()
+
       const file = ctx.request.files[0]
-      const image = await jimp.read(file.filepath)
-      const res = { abc: 123 };
+      const newImage = await faceapi.fetchImage('http://121.41.109.1:8090/i/2023/07/21/qrjuul.jpg')
+      const newCanvas = await faceapi.createCanvasFromMedia(newImage)
+      const result = await faceapi.detectAllFaces(newCanvas)
+      const res = { result: result };
       ctx.helper.success({ ctx, res });
     } catch (error) {
       console.log(error)
@@ -35,39 +33,5 @@ class QrcodeController extends Controller {
     }
 
   }
-}
-async function loadModel() {
-  
-
-  const detect_proto = "detect.prototxt";
-  const detect_weight = "detect.caffemodel";
-  const sr_proto = "sr.prototxt";
-  const sr_weight = "sr.caffemodel";
-
-  if (qrcode_detector != undefined) {
-    updateStatus("Model Existed");
-  } else {
-    const dp = await utils.fetchModelsData(detect_proto);
-    const dw = await utils.fetchModelsData(detect_weight);
-    const sp = await utils.fetchModelsData(sr_proto);
-    const sw = await utils.fetchModelsData(sr_weight);
-
-    cv.FS_createDataFile("/", "detect.prototxt", dp, true, false, false);
-    cv.FS_createDataFile("/", "detect.caffemodel", dw, true, false, false);
-    cv.FS_createDataFile("/", "sr.prototxt", sp, true, false, false);
-    cv.FS_createDataFile("/", "sr.caffemodel", sw, true, false, false);
-
-    qrcode_detector = new cv.wechat_qrcode_WeChatQRCode(
-      "detect.prototxt",
-      "detect.caffemodel",
-      "sr.prototxt",
-      "sr.caffemodel"
-    );
-    updateStatus("OpenCV Model Created");
-  }
-}
-function updateStatus(text)
-{
-  console.log(text)
 }
 module.exports = QrcodeController;

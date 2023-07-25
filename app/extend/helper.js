@@ -7,3 +7,7 @@ exports.success = ({ ctx, res = null, msg = '请求成功' }) => {
   ctx.body = { code: 0, data: res, msg };
   ctx.status = 200;
 };
+exports.error = ({ ctx, res = null, msg = '运行错误' }) => {
+  ctx.body = { code: 999, data: res, msg };
+  ctx.status = 200;
+};
